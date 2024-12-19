@@ -1,0 +1,17 @@
+.resultContainer {
+  font-size: 30px;
+  background-color: #e2dddd;
+  border-radius: 10px;
+}
+
+.operation {
+  color: #2c3e50; 
+  font-weight: 500;
+}
+
+.result {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+

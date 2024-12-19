@@ -1,0 +1,79 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.container {
+  text-align: center;
+  margin: 30px auto;
+  max-width: 400px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.buttonsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.button {
+  padding: 15px;
+  font-size: 1.2rem;
+  background-color: #1b3fab;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.oButton {
+  padding: 15px;
+  font-size: 1.2rem;
+  background-color: rgb(212, 145, 22);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.equalButton {
+  grid-column: span 3;
+  padding: 15px;
+  font-size: 1.5rem;
+  background-color: #0da14b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.clearButton {
+  padding: 15px;
+  position: relative;
+  left: 140px;
+  font-size: 1.2rem;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.deleteButton {
+  background-color: #f39c12;
+  color: black;
+  font-size: 1.7rem;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.deleteButton:hover {
+  background-color: #e67e22;
+}
