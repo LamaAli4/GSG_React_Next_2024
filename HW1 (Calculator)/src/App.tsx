@@ -1,4 +1,3 @@
-// App.tsx
 import { useState } from "react";
 import { evaluate } from "mathjs";
 import ResultDisplay from "./components/ResultDisplay.component";
