@@ -94,3 +94,42 @@ button:hover {
   display: flex;
   gap: 5px;
 }
+
+.todoDetails {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.todoTitle {
+  margin: 0;
+}
+
+.todoItem .completed {
+  text-decoration: line-through;
+  color: gray;
+}
+
+.checkbox input {
+  display: none;
+}
+
+.checkbox .circle {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.checkbox input:checked + .circle {
+  background-color: #4caf50;
+  border-color: #4caf50;
+}
+
+.checkbox .circle:hover {
+  background-color: #e0e0e0;
+}

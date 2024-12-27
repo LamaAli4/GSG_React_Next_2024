@@ -1,6 +1,6 @@
-import React from 'react';
-import { Task } from '../types/types';
-import '../styles/TodoData.css';
+import React from "react";
+import { Task } from "../../types/types";
+import "../TodoData/TodoData.css";
 
 interface TodoDataProps {
   tasks: Task[];

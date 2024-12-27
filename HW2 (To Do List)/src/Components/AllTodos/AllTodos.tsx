@@ -1,7 +1,7 @@
 import React from 'react';
-import { Task } from '../types/types';
-import TodoItem from './TodoItem';
-import '../styles/AllTodos.css'
+import { Task } from '../../types/types';
+import TodoItem from '../TodoItem/TodoItem';
+import '../AllTodos/AllTodos.css'
 
 interface AllTodosProps {
   tasks: Task[];

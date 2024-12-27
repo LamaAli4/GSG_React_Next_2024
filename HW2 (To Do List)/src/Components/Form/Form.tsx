@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/Form.css";
+import "../Form/Form.css";
 
 interface FormProps {
   onAddTask: (title: string, isUrgent: boolean) => void;
