@@ -10,6 +10,10 @@ function App() {
   const [lastOperator, setLastOperator] = useState<string | null>(null);
 
   const handleButtonClick = (value: string) => {
+    if (result === "invalid") {
+      return;
+    }
+
     setInput((prevInput) => {
       if (result !== "" && (value === "+" || value === "-")) {
         setResult("");
@@ -35,7 +39,7 @@ function App() {
   const handleClear = () => {
     setInput("");
     setResult("");
-    setLastOperator("");
+    setLastOperator(null);
   };
 
   const handleDelete = () => {
