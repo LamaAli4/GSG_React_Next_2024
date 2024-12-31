@@ -3,4 +3,5 @@ export interface Task {
     title: string;
     isUrgent: boolean;
     isCompleted: boolean;
+    date: string; 
   }

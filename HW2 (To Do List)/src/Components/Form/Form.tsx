@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import DatePicker from "react-datepicker";
+import { format } from "date-fns";
+import "react-datepicker/dist/react-datepicker.css";
 import "../Form/Form.css";
 
 interface FormProps {
-  onAddTask: (title: string, isUrgent: boolean) => void;
+  onAddTask: (title: string, isUrgent: boolean, date: string) => void;
 }
 
 const getCurrentDate = () => {
@@ -18,6 +21,7 @@ const getCurrentDate = () => {
 const Form: React.FC<FormProps> = ({ onAddTask }) => {
   const [title, setTitle] = useState("");
   const [isUrgent, setIsUrgent] = useState(false);
+  const [date, setDate] = useState<Date | null>(null);
   const [error, setError] = useState("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,13 +33,21 @@ const Form: React.FC<FormProps> = ({ onAddTask }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (title.trim() === "") {
+
+    if (!title.trim()) {
       setError("Task title cannot be empty!");
       return;
     }
-    onAddTask(title, isUrgent);
+    if (!date) {
+      setError("Please select date!");
+      return;
+    }
+
+    const formattedDate = format(date, "yyyy-MM-dd");
+    onAddTask(title, isUrgent, formattedDate);
     setTitle("");
     setIsUrgent(false);
+    setDate(null);
   };
 
   return (
@@ -56,9 +68,19 @@ const Form: React.FC<FormProps> = ({ onAddTask }) => {
           <input
             type="checkbox"
             checked={isUrgent}
-            onChange={e => setIsUrgent(e.target.checked)}
+            onChange={(e) => setIsUrgent(e.target.checked)}
           />
           Mark as urgent
+        </label>
+        <label>
+          <span>Select a due date:</span>
+          <DatePicker
+            selected={date}
+            onChange={(selectedDate) => setDate(selectedDate)}
+            dateFormat="yyyy-MM-dd"
+            className="datePicker"
+            placeholderText="Click to select a date"
+          />
         </label>
         <button type="submit" className="addButton">
           Add Todo

@@ -14,8 +14,10 @@ const TodoItem: React.FC<TodoItemProps> = ({
   onToggleComplete,
   onDelete,
 }) => {
+  const isPastDue = new Date(task.date) < new Date() && task.date !== "";
+
   return (
-    <div className="todoItem">
+    <div className={`todoItem ${isPastDue ? "pastDue" : ""}`}>
       <div className="todoDetails">
         <label className="checkbox">
           <input
@@ -25,9 +27,14 @@ const TodoItem: React.FC<TodoItemProps> = ({
           />
           <span className="circle"></span>
         </label>
-        <span className={`todoTitle ${task.isCompleted ? "completed" : ""}`}>
-          {task.title} {task.isUrgent && <span className="urgent">(U)</span>}
-        </span>
+        <div className="taskInfo">
+          <span className={`todoTitle ${task.isCompleted ? "completed" : ""}`}>
+            {task.title} {task.isUrgent && <span className="urgent">(U)</span>}
+          </span>
+          <span className="taskDate">
+            {isPastDue ? "Expired" : `Due date: ${task.date}`}
+          </span>
+        </div>
       </div>
       <div className="buttonGroup">
         <button

@@ -17,22 +17,50 @@ const App: React.FC = () => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
   };
 
-  const addTask = (title: string, isUrgent: boolean) => {
+  const sortTasks = (tasks: Task[]) => {
+    return tasks.sort((a, b) => {
+      const isExpiredA = new Date(a.date) < new Date() && a.date !== "";
+      const isExpiredB = new Date(b.date) < new Date() && b.date !== "";
+
+      if (isExpiredA && !isExpiredB) return 1;
+      if (!isExpiredA && isExpiredB) return -1;
+      if (a.isCompleted && !b.isCompleted) return 1;
+      if (!a.isCompleted && b.isCompleted) return -1;
+
+      return 0;
+    });
+  };
+
+  const addTask = (title: string, isUrgent: boolean, date: string) => {
     const newTask: Task = {
       id: Math.random().toString(),
       title,
       isUrgent,
       isCompleted: false,
+      date,
     };
-    const updatedTasks = [...tasks, newTask];
+
+    const updatedTasks = sortTasks([newTask, ...tasks]);
     setTasks(updatedTasks);
     saveToLocalStorage(updatedTasks);
   };
 
+  const checkExpiredTasks = (tasks: Task[]) => {
+    return tasks.map((task) => {
+      if (new Date(task.date) < new Date() && task.date !== "") {
+        return { ...task, isCompleted: false };
+      }
+      return task;
+    });
+  };
+
   const toggleComplete = (id: string) => {
-    const updatedTasks = tasks.map((task) =>
+    let updatedTasks = tasks.map((task) =>
       task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
     );
+
+    updatedTasks = checkExpiredTasks(updatedTasks);
+    updatedTasks = sortTasks(updatedTasks);
     setTasks(updatedTasks);
     saveToLocalStorage(updatedTasks);
   };

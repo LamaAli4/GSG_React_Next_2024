@@ -133,3 +133,25 @@ button:hover {
 .checkbox .circle:hover {
   background-color: #e0e0e0;
 }
+
+.taskInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.taskDate {
+  font-size: 12px;
+  color: #6c757d;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.taskDate.expired {
+  color: #ff4d4d;
+  font-weight: bold;
+}
+
+.todoItem.pastDue {
+  background-color: #ffe6e6;
+  border-left: 5px solid #ff4d4d;
+}
