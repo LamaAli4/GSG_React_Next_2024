@@ -12,7 +12,11 @@ interface IProps extends IStudent {
 const Student = (props: IProps) => {
   const [absents, setAbsents] = useState(props.absents);
   const [absentColor, setAbsentColor] = useState("#213547");
-  const prevAbsents = useRef<number>(props.absents);
+  const prevAbsents = useRef<number>(Math.max(0, props.absents - 1));
+
+  useEffect(() => {
+    setAbsents(props.absents);
+  }, [props.absents]);
 
   useEffect(() => {
     if (absents >= 10) {

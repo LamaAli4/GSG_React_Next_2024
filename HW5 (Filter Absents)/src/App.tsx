@@ -4,46 +4,40 @@ import About from "./screens/About.screen";
 import NotFound from "./screens/NotFound.screen";
 import { Link, Route, Routes, useLocation } from "react-router-dom";
 import StudentDetails from "./screens/StudentsDetails.screen";
-import { useState, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 import useLocalStorage from "./hooks/localStorage.hook";
 import { IStudent } from "./types";
 import AddStudent from "./screens/AddStudent.screen";
+import { reducer, State } from "./reducer";
 
 function App() {
   const h1Style = { color: "#69247C", fontSize: "24px" };
 
-  const [studentsList, setStudentsList] = useState<IStudent[]>([]);
-  const [totalAbsents, setTotalAbsents] = useState(0);
+  const initialState: State = { studentsList: [], totalAbsents: 0 };
+  const [state, dispatch] = useReducer(reducer, initialState);
   const location = useLocation();
 
-  const { storedData } = useLocalStorage(studentsList, "students-list");
+  const { storedData } = useLocalStorage(state.studentsList, "students-list");
 
   useEffect(() => {
     const stdList: IStudent[] = storedData || [];
-    const totalAbs = stdList.reduce((prev, cur) => {
-      return prev + cur.absents;
-    }, 0);
-    setTotalAbsents(totalAbs);
-    setStudentsList(stdList);
+    const updatedList = stdList.map((student) => ({
+      ...student,
+      prevAbsents: student.prevAbsents ?? student.absents,
+    }));
+    dispatch({ type: "INIT", payload: updatedList });
   }, [storedData]);
 
-  const removeFirst = () => {
-    const newList = [...studentsList];
-    newList.shift(); // removes the first item
-    setStudentsList(newList);
-  };
-
   const handleAbsentChange = (id: string, change: number) => {
-    setTotalAbsents(totalAbsents + change);
-    setStudentsList(
-      studentsList.map((std) =>
-        std.id === id ? { ...std, absents: std.absents + change } : std
-      )
-    );
+    dispatch({ type: "UPDATE_ABSENTS", payload: { id, change } });
   };
 
   const handleAddStudent = (newStudent: IStudent) => {
-    setStudentsList([newStudent, ...studentsList]);
+    dispatch({ type: "ADD_STUDENT", payload: newStudent });
+  };
+
+  const removeFirst = () => {
+    dispatch({ type: "REMOVE_FIRST" });
   };
 
   return (
@@ -71,8 +65,8 @@ function App() {
           path="/"
           element={
             <Main
-              studentsList={studentsList}
-              totalAbsents={totalAbsents}
+              studentsList={state.studentsList}
+              totalAbsents={state.totalAbsents}
               onAbsent={handleAbsentChange}
               onRemove={removeFirst}
             />

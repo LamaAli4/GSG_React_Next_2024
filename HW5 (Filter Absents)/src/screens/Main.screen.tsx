@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Student from "../components/student/student.component";
 import { IStudent } from "../types";
-
 import { useSearchParams } from "react-router-dom";
 import React from "react";
+import DualSlider from "../components/dual-slider/dual-slider.component";
 
 interface IProps {
   totalAbsents: number;
@@ -18,6 +18,8 @@ const Main = (props: IProps) => {
   const { totalAbsents, studentsList } = props;
 
   const [filteredList, setFilteredList] = useState<IStudent[]>(studentsList);
+  const [minAbsents, setMinAbsents] = useState<number>(0);
+  const [maxAbsents, setMaxAbsents] = useState<number>(100);
   const [params, setParams] = useSearchParams();
   const lastStdRef = useRef<HTMLDivElement>(null);
 
@@ -32,36 +34,32 @@ const Main = (props: IProps) => {
     const graduated = params.get("graduated");
     const courses = params.getAll("courses");
 
+    let tempList = studentsList;
+
     if (query) {
-      setFilteredList(
-        studentsList.filter((std) =>
-          std.name.toLowerCase().includes(query.toLowerCase())
-        )
+      tempList = tempList.filter((std) =>
+        std.name.toLowerCase().includes(query.toLowerCase())
       );
-    } else {
-      setFilteredList(studentsList);
     }
 
     if (graduated === "grad") {
-      setFilteredList((oldState) => oldState.filter((std) => std.isGraduated));
+      tempList = tempList.filter((std) => std.isGraduated);
     } else if (graduated === "non-grad") {
-      setFilteredList((oldState) =>
-        oldState.filter((std) => std.isGraduated == false)
-      );
+      tempList = tempList.filter((std) => !std.isGraduated);
     }
 
     if (courses.length) {
-      // OR
-      // setFilteredList(oldState => (oldState.filter(std => std.coursesList.some(c => (courses.includes(c))))));
-
-      // AND
-      setFilteredList((oldState) =>
-        oldState.filter((std) =>
-          courses.every((c) => std.coursesList.includes(c))
-        )
+      tempList = tempList.filter((std) =>
+        courses.every((c) => std.coursesList.includes(c))
       );
     }
-  }, [params, studentsList]);
+
+    tempList = tempList.filter(
+      (std) => std.absents >= minAbsents && std.absents <= maxAbsents
+    );
+
+    setFilteredList(tempList);
+  }, [params, studentsList, minAbsents, maxAbsents]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const query = event.target.value;
@@ -73,7 +71,7 @@ const Main = (props: IProps) => {
     setParams(params);
   };
 
-  const handleGardFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleGradFilter = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const v = event.target.value;
     if (v === "all") {
       params.delete("graduated");
@@ -89,12 +87,26 @@ const Main = (props: IProps) => {
     if (checked) {
       params.append("courses", course);
     } else {
-      params.delete("courses", course);
+      const currentCourses = params.getAll("courses");
+      params.delete("courses");
+      currentCourses
+        .filter((c) => c !== course)
+        .forEach((c) => params.append("courses", c));
     }
     setParams(params);
   };
 
-  if (props.studentsList.length === 0) {
+  const resetFilters = () => {
+    params.delete("q");
+    params.delete("graduated");
+    params.delete("courses");
+    setParams(params);
+    setMinAbsents(0);
+    setMaxAbsents(100);
+    setFilteredList(studentsList);
+  };
+
+  if (studentsList.length === 0) {
     return <div className="spinner"></div>;
   }
 
@@ -102,8 +114,12 @@ const Main = (props: IProps) => {
     <div className="main-screen">
       <h2>Students List</h2>
       <div className="stats">
-        <button onClick={props.onRemove}>POP Student</button>
-        <button onClick={scrollToLast}>Scroll to Last</button>
+        <button onClick={props.onRemove} className="button">
+          POP Student
+        </button>
+        <button onClick={scrollToLast} className="button">
+          Scroll to Last
+        </button>
         <b style={{ fontSize: "12px", fontWeight: 100, color: "gray" }}>
           Total Absents {totalAbsents}
         </b>
@@ -117,7 +133,7 @@ const Main = (props: IProps) => {
         />
         <select
           value={params.get("graduated") || "all"}
-          onChange={handleGardFilter}
+          onChange={handleGradFilter}
         >
           <option value="all">All</option>
           <option value="grad">Graduated</option>
@@ -137,11 +153,25 @@ const Main = (props: IProps) => {
             </React.Fragment>
           ))}
         </div>
+        <DualSlider
+          min={0}
+          max={100}
+          step={1}
+          values={[minAbsents, maxAbsents]}
+          onChange={(values: number[]) => {
+            setMinAbsents(values[0]);
+            setMaxAbsents(values[1]);
+          }}
+        />
+        <button onClick={resetFilters} className="button">
+          Reset Filters
+        </button>
       </div>
       {filteredList.length ? (
         <div className="list">
           {filteredList.map((student) => (
             <Student
+              mode="list"
               key={student.id}
               id={student.id}
               name={student.name}
@@ -150,7 +180,6 @@ const Main = (props: IProps) => {
               isGraduated={student.isGraduated}
               coursesList={student.coursesList}
               onAbsentChange={props.onAbsent}
-              mode="list"
             />
           ))}
         </div>
