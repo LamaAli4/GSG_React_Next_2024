@@ -1,10 +1,12 @@
-
 "use client";
 import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import ITask from "@/Types/@types";
+import ErrorState from "@/app/ErrorState";
+
+
 
 const TaskDetails = () => {
   const { id } = useParams();
@@ -16,7 +18,6 @@ const TaskDetails = () => {
   const searchParams = useSearchParams();
   const priorityFromURL = searchParams.get("priority");
 
-  
   useEffect(() => {
     async function fetchTask() {
       try {
@@ -29,9 +30,10 @@ const TaskDetails = () => {
         const data = await res.json();
 
         const validPriorities = ["High", "Medium", "Low"];
-        const taskPriority = priorityFromURL && validPriorities.includes(priorityFromURL)
-          ? priorityFromURL
-          : "Medium"; 
+        const taskPriority =
+          priorityFromURL && validPriorities.includes(priorityFromURL)
+            ? priorityFromURL
+            : "Medium";
 
         const taskWithPriority: ITask = {
           ...data,
@@ -59,14 +61,7 @@ const TaskDetails = () => {
   }
 
   if (error || !task) {
-    return (
-      <div className="text-center mt-10">
-        <p className="text-red-600 text-lg">Task Not Found</p>
-        <Link href="/" className="text-blue-500 hover:underline">
-          Back to Tasks
-        </Link>
-      </div>
-    );
+    return <ErrorState />; 
   }
 
   const copyToClipboard = () => {

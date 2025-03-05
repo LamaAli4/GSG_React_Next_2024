@@ -1,14 +1,18 @@
-
+import { AlertTriangle } from "lucide-react";
 import Link from "next/link";
+import styles from "./NotFound.module.css";
 
 const NotFound = () => {
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-4xl font-bold mb-4 text-red-600">Task Not Found</h1>
-      <p className="text-lg mb-4">
-        The task you are looking for does not exist.
+    <main className={styles.container}>
+      <div className={styles.errorIcon}>
+        <AlertTriangle size={80} />
+      </div>
+      <h1 className={styles.title}>404</h1>
+      <p className={styles.message}>
+        The task you are looking for does not exist or may have been moved.
       </p>
-      <Link href="/" className="text-blue-500 hover:underline text-xl">
+      <Link href="/" className={styles.link}>
         Back to Tasks
       </Link>
     </main>
