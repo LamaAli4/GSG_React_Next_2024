@@ -4,7 +4,7 @@ import { fetchTasks } from "@/services/taskService";
 import ITask from "@/Types/@types";
 import { useState, useEffect } from "react";
 import LoadingState from "./loading-state/LoadingState";
-import ErrorState from "../app/ErrorState";
+import ErrorState from "../app/ErrorPage";
 import TaskList from "./TaskList";
 
 const TaskView = () => {
