@@ -1,62 +1,112 @@
 .taskItem {
-  @apply p-5 border border-gray-200 rounded-xl bg-white shadow-lg flex items-center justify-between transition-all duration-300 hover:shadow-xl hover:translate-y-[-2px];
-  background: linear-gradient(to right, rgba(255, 255, 255, 0.9), rgba(249, 250, 251, 0.9));
+  @apply p-6 rounded-2xl flex items-center justify-between transition-all duration-300 mb-4;
+  background: #ffffff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(229, 231, 235, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.taskItem:hover {
+  @apply transform -translate-y-1;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08), 0 10px 10px rgba(0, 0, 0, 0.04);
+  border-color: rgba(209, 213, 219, 0.9);
 }
 
 .taskContent {
-  @apply flex flex-col gap-2;
+  @apply flex flex-col gap-3 flex-grow;
 }
 
 .taskTitle {
-  @apply text-lg font-bold text-gray-800;
+  @apply text-xl font-bold;
+  color: var(--foreground);
+  letter-spacing: -0.02em;
 }
 
 .taskInfo {
-  @apply text-sm flex items-center gap-2 text-gray-600;
+  @apply flex items-center gap-2 text-sm;
 }
 
 .statusLabel {
-  @apply font-medium;
+  @apply font-medium text-gray-500;
 }
 
 .statusCompleted {
-  @apply px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold inline-flex items-center;
+  @apply px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center;
+  background: linear-gradient(135deg, #c6f6d5 0%, #9ae6b4 100%);
+  color: #22543d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .statusIncomplete {
-  @apply px-2 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold inline-flex items-center;
+  @apply px-3 py-1 rounded-full text-xs font-semibold inline-flex items-center;
+  background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
+  color: #822727;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .priorityText {
-  @apply font-semibold rounded-full px-2 py-1 text-xs inline-flex items-center;
+  @apply font-semibold rounded-full px-3 py-1 text-xs inline-flex items-center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .priorityHigh {
-  @apply bg-red-100 text-red-700;
+  background: linear-gradient(135deg, #fecaca 0%, #f87171 100%);
+  color: #7f1d1d;
 }
 
 .priorityMedium {
-  @apply bg-yellow-100 text-yellow-700;
+  background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%);
+  color: #78350f;
 }
 
 .priorityLow {
-  @apply bg-blue-100 text-blue-700;
+  background: linear-gradient(135deg, #dbeafe 0%, #60a5fa 100%);
+  color: #1e3a8a;
 }
 
 .taskLink {
-  @apply mt-2 text-blue-600 hover:text-blue-800 font-medium text-sm inline-flex items-center transition-colors duration-200;
+  @apply mt-3 font-medium text-sm inline-flex items-center text-blue-600;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.taskLink:hover {
-  @apply underline;
+.taskLink::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -2px;
+  left: 0;
+  background: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+.taskLink:hover::after {
+  width: 100%;
 }
 
 .taskImage {
-  @apply ml-4 p-3 bg-gray-50 rounded-full shadow-sm;
-  transition: transform 0.2s ease-in-out;
+  @apply p-4 rounded-full flex-shrink-0 ml-4;
+  background: rgba(243, 244, 246, 0.5);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), inset 0 2px 4px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
 }
 
 .taskItem:hover .taskImage {
-  transform: scale(1.1);
+  transform: rotate(10deg) scale(1.1);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.08), inset 0 2px 4px rgba(0, 0, 0, 0.03);
 }
+
+
+@media (max-width: 640px) {
+  .taskItem {
+    @apply flex-col items-start;
+  }
+
+  .taskImage {
+    @apply mt-4 ml-0;
+  }
+}
+
+
 

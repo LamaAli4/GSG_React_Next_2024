@@ -5,46 +5,34 @@
   justify-content: center;
   min-height: 100vh;
   padding: 2rem;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(
+    135deg,
+    var(--background) 0%,
+    color-mix(in srgb, var(--background) 80%, var(--primary) 20%) 100%
+  );
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
-.container::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    45deg,
-    rgba(255, 0, 0, 0.03),
-    rgba(255, 0, 0, 0.03) 10px,
-    rgba(255, 255, 255, 0.03) 10px,
-    rgba(255, 255, 255, 0.03) 20px
-  );
-  z-index: 0;
-}
-
 .content {
   position: relative;
   z-index: 1;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: color-mix(in srgb, var(--background) 95%, var(--primary) 5%);
   padding: 3rem;
   border-radius: 1rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   max-width: 600px;
   width: 100%;
   animation: fadeIn 0.5s ease-in-out;
+  border: 1px solid color-mix(in srgb, var(--background) 80%, var(--primary) 20%);
 }
 
 .title {
   font-size: 3rem;
   font-weight: 800;
   margin-bottom: 1.5rem;
-  color: #dc2626;
+  color: var(--danger);
   position: relative;
   display: inline-block;
 }
@@ -57,7 +45,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background-color: #dc2626;
+  background-color: var(--danger);
   border-radius: 2px;
 }
 
@@ -65,7 +53,7 @@
   font-size: 1.25rem;
   line-height: 1.6;
   margin-bottom: 2.5rem;
-  color: #4b5563;
+  color: var(--foreground);
 }
 
 .refreshButton {
@@ -73,8 +61,8 @@
   padding: 0.75rem 2rem;
   font-size: 1.125rem;
   font-weight: 600;
-  color: white;
-  background-color: #3b82f6;
+  color: var(--background);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;
@@ -82,10 +70,10 @@
   box-shadow: 0 4px 6px rgba(59, 130, 246, 0.3);
   position: relative;
   overflow: hidden;
+  margin: 0 0.5rem;
 }
 
 .refreshButton:hover {
-  background-color: #2563eb;
   transform: translateY(-2px);
   box-shadow: 0 6px 10px rgba(59, 130, 246, 0.4);
 }
@@ -111,9 +99,18 @@
 
 .errorIcon {
   font-size: 5rem;
-  color: #dc2626;
+  color: var(--danger);
   margin-bottom: 1.5rem;
   animation: shake 0.5s ease-in-out;
+}
+
+.errorInfo {
+  margin-top: 2rem;
+  padding: 1rem;
+  background-color: color-mix(in srgb, var(--background) 90%, var(--danger) 10%);
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--foreground);
 }
 
 @keyframes fadeIn {
@@ -157,6 +154,11 @@
   }
 
   .message {
+    font-size: 1rem;
+  }
+
+  .refreshButton {
+    padding: 0.5rem 1.5rem;
     font-size: 1rem;
   }
 }

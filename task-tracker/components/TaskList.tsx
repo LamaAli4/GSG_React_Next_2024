@@ -9,7 +9,7 @@ interface TaskListProps {
 
 const TaskList = ({ tasks }: TaskListProps) => {
   return (
-    <ul className="w-full max-w-md space-y-3">
+    <ul >
       {tasks.map((task) => (
         <TaskItem key={task.id} task={task} />
       ))}

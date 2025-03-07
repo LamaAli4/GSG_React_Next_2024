@@ -21,7 +21,10 @@ const TaskItem = ({ task }: Props) => {
   };
 
   return (
-    <li className={styles.taskItem}>
+    <li
+      className={`${styles.taskItem} task-fade-in`}
+      style={{ animationDelay: `${Math.random() * 0.3}s` }}
+    >
       <div className={styles.taskContent}>
         <p className={styles.taskTitle}>{task.title}</p>
 

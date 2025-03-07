@@ -1,8 +1,13 @@
+"use client";
+
+import styles from "../app/task/[id]/TaskDetails.module.css";
+
 const LoadingSpinner = () => {
   return (
-    <div className="flex justify-center items-center">
-      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+    <div className={styles.loadingContainer}>
+      <div className={styles.loader}></div>
     </div>
   );
 };
+
 export default LoadingSpinner;
